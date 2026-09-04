@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影视打卡记录</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-neutral-100 min-h-screen p-4 max-w-md mx-auto">
+    <h1 class="text-xl font-bold text-center my-4">🎬 影视打卡本</h1>
+
+    <!--新增表单-->
+    <div class="bg-white rounded-xl shadow p-3 mb-4">
+        <input id="titleInput" type="text" placeholder="输入影视名称" class="w-full border rounded-lg px-3 py-2 mb-2">
+        <select id="typeSelect" class="w-full border rounded-lg px-3 py-2 mb-2">
+            <option value="电影">电影</option>
+            <option value="剧集">剧集</option>
+            <option value="动漫">动漫</option>
+            <option value="综艺">综艺</option>
+        </select>
+        <button onclick="addItem()" class="w-full bg-sky-500 text-white py-2 rounded-lg">添加记录</button>
+    </div>
+
+    <!--列表区域-->
+    <div id="listWrap"></div>
+
+<script>
+//读取本地存储
+function getList(){
+    const raw = localStorage.getItem("movieCheck");
+    return raw ? JSON.parse(raw) : [];
+}
+function saveList(arr){
+    localStorage.setItem("movieCheck", JSON.stringify(arr));
+}
+
+//新增条目
+function addItem(){
+    const title = document.getElementById("titleInput").value.trim();
+    const type = document.getElementById("typeSelect").value;
+    if(!title) return;
+    const arr = getList();
+    arr.push({
+        title,
+        type,
+        checked:false,
+        time:new Date().toLocaleString()
+    });
+    saveList(arr);
+    document.getElementById("titleInput").value = "";
+    render();
+}
+
+//切换打卡状态
+function toggleCheck(idx){
+    const arr = getList();
+    arr[idx].checked = !arr[idx].checked;
+    saveList(arr);
+    render();
+}
+
+//删除条目
+function delItem(idx){
+    const arr = getList();
+    arr.splice(idx,1);
+    saveList(arr);
+    render();
+}
+
+//渲染页面
+function render(){
+    const arr = getList();
+    const wrap = document.getElementById("listWrap");
+    wrap.innerHTML = "";
+    arr.forEach((item,idx)=>{
+        const div = document.createElement("div");
+        div.className = `bg-white rounded-lg shadow p-3 mb-2 flex justify-between items-center ${item.checked?"opacity-60":""}`;
+        div.innerHTML = `
+            <div class="flex items-center gap-2">
+                <input type="checkbox" ${item.checked?"checked":""} onchange="toggleCheck(${idx})" class="w-5 h-5">
+                <div>
+                    <div class="${item.checked?"line-through":""}">${item.title}</div>
+                    <div class="text-xs text-gray-400">${item.type}｜${item.time}</div>
+                </div>
+            </div>
+            <button onclick="delItem(${idx})" class="text-red-400 text-sm">删除</button>
+        `;
+        wrap.appendChild(div);
+    })
+}
+
+render();
+</script>
+</body>
+</html>
