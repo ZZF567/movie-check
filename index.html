@@ -165,8 +165,7 @@ body::before {
   font-weight: 600;
   color: var(--ink-soft);
 }
-.cal-weekdays span:first-child,
-.cal-weekdays span:last-child {
+.cal-weekdays span:first-child, .cal-weekdays span:last-child {
   color: var(--accent);
 }
 .cal-grid {
@@ -368,9 +367,7 @@ body::before {
   margin-bottom: 6px;
   letter-spacing: 1px;
 }
-.form-input,
-.form-textarea,
-.form-select {
+.form-input, .form-textarea, .form-select {
   width: 100%;
   padding: 12px 14px;
   border: 2.5px solid var(--ink);
@@ -383,9 +380,7 @@ body::before {
   box-shadow: 2px 2px 0 var(--ink);
   transition: box-shadow 0.15s;
 }
-.form-input:focus,
-.form-textarea:focus,
-.form-select:focus {
+.form-input:focus, .form-textarea:focus, .form-select:focus {
   box-shadow: 3px 3px 0 var(--accent);
 }
 .form-textarea {
@@ -509,9 +504,7 @@ body::before {
   gap: 10px;
   margin-top: 24px;
 }
-.btn-primary,
-.btn-secondary,
-.btn-danger {
+.btn-primary, .btn-secondary, .btn-danger {
   flex: 1;
   padding: 14px;
   border: 2.5px solid var(--ink);
@@ -527,9 +520,7 @@ body::before {
 .btn-primary { background: var(--accent); color: var(--paper); }
 .btn-secondary { background: var(--paper-dark); color: var(--ink); }
 .btn-danger { background: #8b3a2a; color: var(--paper); flex: 0 0 auto; padding: 14px 20px; }
-.btn-primary:active,
-.btn-secondary:active,
-.btn-danger:active {
+.btn-primary:active, .btn-secondary:active, .btn-danger:active {
   transform: translate(3px, 3px);
   box-shadow: 0 0 0 var(--ink);
 }
@@ -897,7 +888,6 @@ body::before {
 <script>
 /* ===== 数据层 ===== */
 const STORAGE_KEY = 'movieNote';
-// 全局缓存，避免重复读取localStorage
 let appRecords = [];
 
 function loadRecords() {
@@ -908,13 +898,16 @@ function loadRecords() {
     return [];
   }
 }
+
 function saveRecords(records) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
   appRecords = JSON.parse(JSON.stringify(records));
 }
+
 function genId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 }
+
 /* ===== 关键词 → 手绘SVG 映射 ===== */
 const KEYWORDS = [
   { key: '感动', color: '#5b8fb9' },
@@ -926,10 +919,12 @@ const KEYWORDS = [
   { key: '悲伤', color: '#6a8ca8' },
   { key: '爱情', color: '#c47a8a' }
 ];
+
 function getKeywordColor(kw) {
   const found = KEYWORDS.find(k => k.key === kw);
   return found ? found.color : '#888';
 }
+
 /* 手绘风格SVG图标 */
 function svgIcon(kw, size) {
   const c = getKeywordColor(kw);
@@ -938,13 +933,13 @@ function svgIcon(kw, size) {
   const stroke = '#2b2620';
   const sw = 2.2;
   switch (kw) {
-    case '感动': // 水滴
+    case '感动':
       return `<svg ${common}>
         <path d="M24 6 C24 6 10 22 10 31 C10 38.7 16.3 44 24 44 C31.7 44 38 38.7 38 31 C38 22 24 6 24 6Z"
           fill="${c}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
         <path d="M18 28 C16.5 30 16 32.5 17 34.5" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
       </svg>`;
-    case '治愈': // 云朵
+    case '治愈':
       return `<svg ${common}>
         <path d="M14 34 C8 34 6 28 10 25 C8 20 13 16 18 18 C20 13 28 12 31 17 C37 15 42 20 40 26 C44 29 42 34 37 34 Z"
           fill="${c}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
@@ -952,7 +947,7 @@ function svgIcon(kw, size) {
         <circle cx="29" cy="26" r="1.5" fill="${stroke}"/>
         <path d="M22 30 Q24.5 32 27 30" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round" fill="none"/>
       </svg>`;
-    case '搞笑': // 笑脸
+    case '搞笑':
       return `<svg ${common}>
         <circle cx="24" cy="24" r="18" fill="${c}" stroke="${stroke}" stroke-width="${sw}"/>
         <circle cx="17" cy="20" r="2.5" fill="${stroke}"/>
@@ -961,7 +956,7 @@ function svgIcon(kw, size) {
         <path d="M13 16 Q15 13 18 15" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round" fill="none"/>
         <path d="M30 15 Q33 13 35 16" stroke="${stroke}" stroke-width="1.5" stroke-linecap="round" fill="none"/>
       </svg>`;
-    case '恐怖': // 月亮+暗影
+    case '恐怖':
       return `<svg ${common}>
         <circle cx="24" cy="24" r="18" fill="${c}" stroke="${stroke}" stroke-width="${sw}"/>
         <path d="M30 10 C22 12 18 18 19 26 C20 33 26 38 33 37 C25 36 19 30 20 23 C21 17 25 12 30 10Z"
@@ -969,7 +964,7 @@ function svgIcon(kw, size) {
         <circle cx="16" cy="18" r="1.2" fill="#fff" opacity="0.5"/>
         <circle cx="14" cy="28" r="0.8" fill="#fff" opacity="0.4"/>
       </svg>`;
-    case '科幻': // 星星
+    case '科幻':
       return `<svg ${common}>
         <path d="M24 4 L28 18 L43 18 L31 27 L35 42 L24 33 L13 42 L17 27 L5 18 L20 18 Z"
           fill="${c}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
@@ -977,13 +972,13 @@ function svgIcon(kw, size) {
         <circle cx="10" cy="36" r="1.2" fill="${stroke}"/>
         <circle cx="40" cy="34" r="1" fill="${stroke}"/>
       </svg>`;
-    case '热血': // 火焰
+    case '热血':
       return `<svg ${common}>
         <path d="M24 4 C24 4 14 16 14 26 C14 32 18 36 20 34 C19 30 22 28 22 24 C22 24 18 20 20 14 C22 16 26 18 27 22 C28 18 32 16 33 12 C36 16 38 22 36 27 C38 28 39 31 38 34 C37 40 31 44 24 44 C16 44 10 39 10 32 C10 22 24 4 24 4Z"
           fill="${c}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
         <path d="M22 32 C21 35 23 38 25 37 C27 36 26 33 24 32" fill="#f5d76e" opacity="0.8"/>
       </svg>`;
-    case '悲伤': // 雨云
+    case '悲伤':
       return `<svg ${common}>
         <path d="M12 26 C7 26 5 21 8 19 C7 15 11 12 15 13 C17 9 24 9 27 13 C32 12 36 16 35 21 C38 23 37 26 33 26 Z"
           fill="${c}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
@@ -991,7 +986,7 @@ function svgIcon(kw, size) {
         <line x1="24" y1="33" x2="22" y2="40" stroke="#5b8fb9" stroke-width="2.2" stroke-linecap="round"/>
         <line x1="32" y1="32" x2="30" y2="38" stroke="#5b8fb9" stroke-width="2.2" stroke-linecap="round"/>
       </svg>`;
-    case '爱情': // 爱心
+    case '爱情':
       return `<svg ${common}>
         <path d="M24 42 C24 42 6 30 6 18 C6 11 11 6 17 6 C21 6 23 8 24 10 C25 8 27 6 31 6 C37 6 42 11 42 18 C42 30 24 42 24 42Z"
           fill="${c}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>
@@ -1001,6 +996,7 @@ function svgIcon(kw, size) {
       return `<svg ${common}><circle cx="24" cy="24" r="16" fill="${c}" stroke="${stroke}" stroke-width="${sw}"/></svg>`;
   }
 }
+
 /* ===== 状态 ===== */
 let currentDate = new Date();
 let currentYear = currentDate.getFullYear();
@@ -1008,10 +1004,17 @@ let currentMonth = currentDate.getMonth();
 let selectedKeyword = '';
 let currentImageData = '';
 let currentStatus = 'watched';
+
 /* ===== DOM 引用 ===== */
 const $ = id => document.getElementById(id);
 const calGrid = $('calGrid');
 const monthTitle = $('monthTitle');
+
+// 补全截断丢失的formatDate函数！！
+function formatDate(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 /* ===== 日历渲染 ===== */
 function renderCalendar() {
   const firstDay = new Date(currentYear, currentMonth, 1);
@@ -1020,7 +1023,6 @@ function renderCalendar() {
   const daysInMonth = lastDay.getDate();
   const prevMonthDays = new Date(currentYear, currentMonth, 0).getDate();
   monthTitle.textContent = `${currentYear}年 ${currentMonth + 1}月`;
-  // 使用全局缓存数据，避免重复读localStorage
   const records = appRecords;
   const today = new Date();
   const todayStr = formatDate(today);
@@ -1066,5 +1068,7 @@ function renderCalendar() {
     });
   });
 }
-function formatDate(d) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')
+
+function openDetail(dateStr) {
+  $('detailDate').textContent = dateStr;
+  const recs = appRecords.filter(r => r.status ===
