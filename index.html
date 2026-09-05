@@ -1159,8 +1159,8 @@ function renderCalendar() {
   let html = '';
 
   // 上个月填充
-  for (let i = startWeekday - 1; i >= 0; i--) {
-    const day = prevMonthDays - i;
+  for (let i = startWeekday; i > 0; i--) {
+    const day = prevMonthDays - i+1;
     html += `<div class="cal-cell other-month"><span class="day-num">${day}</span></div>`;
   }
 
