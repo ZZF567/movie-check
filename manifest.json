@@ -1,0 +1,16 @@
+{
+  "name": "影视手账",
+  "short_name": "影视手账",
+  "description": "记录看过的影视",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#404040",
+  "icons": [
+    {
+      "src": "assets/icon512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
